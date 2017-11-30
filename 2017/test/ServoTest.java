@@ -25,7 +25,7 @@ public class ServoTest extends Robot {
     @Override
     public void init()
     {
-        servo = hardwareMap.servo.get("s4");
+        servo = hardwareMap.servo.get("relicRotate");
     }
 
     @Override
