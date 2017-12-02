@@ -333,11 +333,11 @@ public class VioletTeleop extends Robot {
     {
         drive = new MecanumWheelDriveTask(this, frontLeft, frontRight, rearLeft, rearRight);
         // Left joystick (Gamepad 2) controls lifting and lowers of glyph mechanism
-        controlLinear = new OneWheelDriveTask(this, linear, true);
+        //controlLinear = new OneWheelDriveTask(this, linear, true);
         // Right joystick (Gamepad 2) controls extending and contracting of relic mechanism
         //controlSlide = new OneWheelDriveTask(this, slide, false);
         this.addTask(drive);
-        this.addTask(controlLinear);
+        //this.addTask(controlLinear);
         //this.addTask(controlSlide);
         this.addTask(runSlideOutTask);
         this.addTask(runSlideInTask);
@@ -398,6 +398,14 @@ public class VioletTeleop extends Robot {
                     // Rotate relic NEEDS TO BE CALIBRATED
 
                     rotateRelic();
+                } else if (event.kind == EventKind.DPAD_UP_DOWN) {
+                    // Extends Relic slide out
+
+                    extendRelic();
+                } else if (event.kind == EventKind.DPAD_DOWN_DOWN) {
+                    // Contracts Relic slide out
+
+                    contractRelic();
                 } else if (event.kind == EventKind.BUTTON_Y_DOWN) {
                     // Toggles slowness of motors
 
