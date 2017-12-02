@@ -22,8 +22,9 @@ public class IMUTableConfiguration extends LinearOpMode
 {
     public final static int TICKS_PER_INCH = 68;
     public final static int TICKS_PER_DEGREE = 29;
-    public final static double STRAIGHT_SPEED = 0.1;
-    public final static double TURN_SPEED = 0.4;
+    public final static double STRAIGHT_SPEED = 0.05;
+    public final static double REVERSE_SPEED = 0.05;
+    public final static double TURN_SPEED = 0.1;
 
     public final static double MAX_TILT = 15;
 

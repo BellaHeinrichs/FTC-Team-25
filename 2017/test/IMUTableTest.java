@@ -145,7 +145,7 @@ public class IMUTableTest extends Robot
         //deadReckonTask = new DeadReckonTask(this, deadReckon, drivetrain, imuSensorCriteria);
         //addTask(deadReckonTask);
 
-        DeadReckonPath path = new DeadReckonPath();
+        final DeadReckonPath path = new DeadReckonPath();
 
         path.addSegment(DeadReckonPath.SegmentType.STRAIGHT, 10, IMUTableConfiguration.STRAIGHT_SPEED);
 
@@ -158,7 +158,8 @@ public class IMUTableTest extends Robot
 
                     if (drEvent.kind == EventKind.SENSOR_SATISFIED) {
                         RobotLog.i("Robot is STOPPED, reached maximum tilt level.");
-                        stop();
+                        path.stop();
+                        path.addSegment(DeadReckonPath.SegmentType.STRAIGHT, 4, IMUTableConfiguration.REVERSE_SPEED);
                     } else if (drEvent.kind == EventKind.PATH_DONE){
                         RobotLog.i("Path done before tiltMax satisfied");
                     }
