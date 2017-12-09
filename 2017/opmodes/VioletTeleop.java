@@ -221,8 +221,8 @@ public class VioletTeleop extends Robot {
             s2.setPosition(VioletConstants.S2_CLOSED);
             s1Open = false;
         } else {
-            s1.setPosition(VioletConstants.S1_OPEN);
-            s2.setPosition(VioletConstants.S2_OPEN);
+            s1.setPosition(VioletConstants.S1_45);
+            s2.setPosition(VioletConstants.S2_45);
             s1Open = true;
         }
     }
@@ -237,8 +237,8 @@ public class VioletTeleop extends Robot {
             s4.setPosition(VioletConstants.S4_CLOSED);
             s3Open = false;
         } else {
-            s3.setPosition(VioletConstants.S3_OPEN);
-            s4.setPosition(VioletConstants.S4_OPEN);
+            s3.setPosition(VioletConstants.S3_45);
+            s4.setPosition(VioletConstants.S4_45);
             s3Open = true;
         }
     }
@@ -398,14 +398,14 @@ public class VioletTeleop extends Robot {
                     // Rotate relic NEEDS TO BE CALIBRATED
 
                     rotateRelic();
-                } else if (event.kind == EventKind.DPAD_UP_DOWN) {
+                //} else if (event.kind == EventKind.DPAD_UP_DOWN) {
                     // Extends Relic slide out
 
-                    extendRelic();
-                } else if (event.kind == EventKind.DPAD_DOWN_DOWN) {
+                    //extendRelic();
+                //} else if (event.kind == EventKind.DPAD_DOWN_DOWN) {
                     // Contracts Relic slide out
 
-                    contractRelic();
+                    //contractRelic();
                 } else if (event.kind == EventKind.BUTTON_Y_DOWN) {
                     // Toggles slowness of motors
 
