@@ -53,6 +53,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
+import java.util.Locale;
+
 import team25core.SensorCriteria;
 
 /**
@@ -65,6 +67,7 @@ public class IMUSensorCriteria implements SensorCriteria {
     private BNO055IMU imu;
     private double tilt;
     Orientation angles;
+    Acceleration gravity;
 
     public IMUSensorCriteria(BNO055IMU imu, double maxTilt) {
         this.maxTilt = maxTilt;
@@ -77,9 +80,17 @@ public class IMUSensorCriteria implements SensorCriteria {
                 Math.cos(Math.toRadians(angles.thirdAngle)))));
     }
 
+    public double getMag() {
+        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        gravity  = imu.getGravity();
+        return Math.sqrt(gravity.xAccel*gravity.xAccel
+                        + gravity.yAccel*gravity.yAccel
+                        + gravity.zAccel*gravity.zAccel);
+    }
+
     @Override
     public boolean satisfied() {
-        tilt = getTilt();
+        tilt = getMag();
         RobotLog.i("Title: %.2f", tilt);
         if(tilt >= maxTilt) {
             return true;

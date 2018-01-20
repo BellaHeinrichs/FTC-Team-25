@@ -41,6 +41,7 @@ import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -61,21 +62,24 @@ import team25core.RobotEvent;
 import team25core.TwoWheelDirectDrivetrain;
 
 @Autonomous(name="IMU Table Test", group="AutoTeam25")
-//@Disabled
+@Disabled
 public class IMUTableTest extends Robot
 {
     private DcMotor frontRight;
     private DcMotor frontLeft;
+
     private DeadReckonTask deadReckonTask;
     private final static double STRAIGHT_SPEED = BellaConfiguration.STRAIGHT_SPEED;
     private final static double TURN_SPEED = BellaConfiguration.TURN_SPEED;
-    private final static int TICKS_PER_INCH = BellaConfiguration.TICKS_PER_INCH;
+    private final static int TICKS_PER_INCH = BellaConfiguration.TICKS_PER_INCH;=
     private final static int TICKS_PER_DEGREE = BellaConfiguration.TICKS_PER_DEGREE;
     private DeadReckonPath deadReckon;
     private TwoWheelDirectDrivetrain drivetrain;
+
     private IMUSensorCriteria imuSensorCriteria;
     BNO055IMU imu;
     Orientation angles;
+    Acceleration gravity;
 
     @Override
     public void handleEvent(RobotEvent e)
@@ -112,8 +116,6 @@ public class IMUTableTest extends Robot
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         // parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
         parameters.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode
         parameters.loggingEnabled      = true;
@@ -129,6 +131,15 @@ public class IMUTableTest extends Robot
     }
     void composeTelemetry() {
         telemetry.addLine()
+                .addData("mag", new Func<String>() {
+                    @Override public String value() {
+                        return String.format(Locale.getDefault(), "%.3f",
+                                Math.sqrt(gravity.xAccel*gravity.xAccel
+                                        + gravity.yAccel*gravity.yAccel
+                                        + gravity.zAccel*gravity.zAccel));
+                    }
+                });
+        telemetry.addLine()
                 .addData("tilt", new Func<String>() {
                     @Override public String value() {
                         return String.format(Locale.getDefault(), "%.3f",
@@ -141,7 +152,7 @@ public class IMUTableTest extends Robot
     @Override
     public void start()
     {
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        //imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
         //deadReckonTask = new DeadReckonTask(this, deadReckon, drivetrain, imuSensorCriteria);
         //addTask(deadReckonTask);
 

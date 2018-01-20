@@ -51,6 +51,8 @@ public class IMUTableConfiguration extends LinearOpMode
 
         // We are expecting the IMU to be attached to an I2C port on a Core Device Interface Module and named "imu".
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.loggingEnabled = true;
         parameters.loggingTag     = "IMU";
         imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -105,6 +107,7 @@ public class IMUTableConfiguration extends LinearOpMode
             // to do that in each of the three items that need that info, as that's
             // three times the necessary expense.
             angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            gravity  = imu.getGravity();
         }
         });
 
@@ -128,12 +131,37 @@ public class IMUTableConfiguration extends LinearOpMode
                 })
                 .addData("roll", new Func<String>() {
                     @Override public String value() {
-                        return formatAngle(angles.angleUnit, angles.secondAngle);
+                        //return formatAngle(angles.angleUnit, angles.secondAngle);
+                        return formatAngle(angles.angleUnit, angles.thirdAngle);
                     }
                 })
                 .addData("pitch", new Func<String>() {
                     @Override public String value() {
-                        return formatAngle(angles.angleUnit, angles.thirdAngle);
+                        //return formatAngle(angles.angleUnit, angles.thirdAngle);
+                        return formatAngle(angles.angleUnit, angles.secondAngle);
+                    }
+                });
+
+        telemetry.addLine()
+                .addData("grvty", new Func<String>() {
+                    @Override public String value() {
+                        return gravity.toString();
+                    }
+                })
+                .addData("mag", new Func<String>() {
+                    @Override public String value() {
+                        return String.format(Locale.getDefault(), "%.3f",
+                                Math.sqrt(gravity.xAccel*gravity.xAccel
+                                        + gravity.yAccel*gravity.yAccel
+                                        + gravity.zAccel*gravity.zAccel));
+                    }
+                });
+        telemetry.addLine()
+                .addData("tilt", new Func<String>() {
+                    @Override public String value() {
+                        return String.format(Locale.getDefault(), "%.3f",
+                                Math.toDegrees(Math.acos(Math.cos(Math.toRadians(angles.secondAngle) *
+                                        Math.cos(Math.toRadians(angles.thirdAngle))))));
                     }
                 });
     }

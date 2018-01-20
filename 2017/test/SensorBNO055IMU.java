@@ -191,12 +191,4 @@ public class SensorBNO055IMU extends LinearOpMode
     String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
-
-       /* public double getTilt() {
-            angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            gravity  = imu.getGravity();
-
-            return Math.toDegrees(Math.acos(Math.cos(Math.toRadians(angles.secondAngle) *
-                            Math.cos(Math.toRadians(angles.thirdAngle)))));
-        }*/
 }
