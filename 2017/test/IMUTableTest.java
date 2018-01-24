@@ -48,6 +48,7 @@ import java.util.Locale;
 import team25core.DeadReckonPath;
 import team25core.DeadReckonTask;
 import team25core.IMUTableConfiguration;
+import team25core.IMUSensorCriteria;
 import team25core.Robot;
 import team25core.RobotEvent;
 import team25core.TwoWheelDirectDrivetrain;
@@ -62,7 +63,7 @@ public class IMUTableTest extends Robot
     private DeadReckonTask deadReckonTask;
     private final static double STRAIGHT_SPEED = BellaConfiguration.STRAIGHT_SPEED;
     private final static double TURN_SPEED = BellaConfiguration.TURN_SPEED;
-    private final static int TICKS_PER_INCH = BellaConfiguration.TICKS_PER_INCH;=
+    private final static int TICKS_PER_INCH = BellaConfiguration.TICKS_PER_INCH;
     private final static int TICKS_PER_DEGREE = BellaConfiguration.TICKS_PER_DEGREE;
     private DeadReckonPath deadReckon;
     private TwoWheelDirectDrivetrain drivetrain;
@@ -103,21 +104,7 @@ public class IMUTableTest extends Robot
         deadReckon.addSegment(DeadReckonPath.SegmentType.STRAIGHT, 15, STRAIGHT_SPEED);
         deadReckon.addSegment(DeadReckonPath.SegmentType.TURN, 75, TURN_SPEED);
 
-        // Set up the parameters with which we will use our IMU. Note that integration
-        // algorithm here just reports accelerations to the logcat log; it doesn't actually
-        // provide positional information.
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        // parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
         imuSensorCriteria = new IMUSensorCriteria(imu, IMUTableConfiguration.MAX_TILT);
     }
     void composeTelemetry() {
